@@ -28,8 +28,20 @@ def addStatement():
     name = request.form['name']
     amount = request.form['amount']
     category = request.form['category']
-    print('Date= ' + date, 'Name= ' + name, 'Amount= ' + amount, 'Category= ' + category)
+    #class statement(column_name_1= variable, column_name_n= variable_n)
+    statement = Statement(
+        date= date, 
+        name= name, 
+        amount= amount, 
+        category= category)
+    db.session.add(statement)
+    db.session.commit()
     return redirect('/')
+
+@app.route('/showData')
+def showData():
+    statements= Statement.query.all()
+    return render_template('statements.html', statements= statements)
 
 if __name__ == "__main__":
     app.run(debug= True)

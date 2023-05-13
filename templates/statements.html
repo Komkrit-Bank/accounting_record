@@ -1,0 +1,11 @@
+{% extends 'layout.html' %}
+
+{% block body %}
+    {% for item in statements %}
+        วันที่บันทึกข้อมูล : {{ item.date }}
+        ชื่อธุรกรรม : {{ item.name }}
+        จำนวนเงิน : {{ item.amount }}
+        หมวดหมู่ : {{ item.category }}
+        <hr>
+    {% endfor %}
+{% endblock %}
