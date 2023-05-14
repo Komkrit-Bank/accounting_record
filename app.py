@@ -13,14 +13,34 @@ class Statement(db.Model):
     name= db.Column(db.String(100), nullable= False)
     amount= db.Column(db.Integer, nullable= False)
     category = db.Column(db.String(50), nullable= False)
-    
-    
+
+@app.template_filter()
+def currencyFormat(value):
+    value= float(value)
+    return "{:,.2f}".format(value)
+
 with app.app_context():
     db.create_all()
 
-@app.route('/')
+
+# delete route
+@app.route('/delete/<int:id>')
+def deleteStatement(id):
+    statement= Statement.query.filter_by(id= id).first()
+    db.session.delete(statement)
+    db.session.commit()
+    return redirect('/')
+
+# add route
+@app.route('/addForm')
 def index():
     return render_template('addForm.html')
+
+# edit route
+@app.route('/edit/<int:id>')
+def editForm(id):
+    statement = Statement.query.filter_by(id= id).first()
+    return render_template('editForm.html', statement= statement)
 
 @app.route('/addStatement', methods= ['POST'])
 def addStatement():
@@ -38,7 +58,22 @@ def addStatement():
     db.session.commit()
     return redirect('/')
 
-@app.route('/showData')
+@app.route('/updateStatement', methods= ['POST'])
+def updateStatement():
+    id = request.form['id']
+    date = request.form['date']
+    name = request.form['name']
+    amount = request.form['amount']
+    category = request.form['category']
+    statement= Statement.query.filter_by(id= id).first()
+    statement.date = date
+    statement.name = name
+    statement.amount = amount
+    statement.category = category
+    db.session.commit()
+    return redirect('/')
+
+@app.route('/')
 def showData():
     statements= Statement.query.all()
     return render_template('statements.html', statements= statements)
