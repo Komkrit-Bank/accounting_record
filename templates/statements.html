@@ -1,11 +1,35 @@
 {% extends 'layout.html' %}
 
 {% block body %}
-    {% for item in statements %}
-        วันที่บันทึกข้อมูล : {{ item.date }}
-        ชื่อธุรกรรม : {{ item.name }}
-        จำนวนเงิน : {{ item.amount }}
-        หมวดหมู่ : {{ item.category }}
-        <hr>
-    {% endfor %}
+    <div class="container">
+        <table class="table table-hover">
+            <!-- หัวตาราง -->
+            <thead>
+                <tr>
+                    <th>ชื่อธุรกรรม</th>
+                    <th>จำนวนเงิน</th>
+                    <th>หมวดหมู่</th>
+                    <th>วันที่บันทึกข้อมูล</th>
+                    <th>ลบ</th>
+                    <th>แก้ไข</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for item in statements %}
+                <tr>
+                    <td>{{ item.date }}</td>
+                    <td>{{ item.name }}</td>
+                    <td>{{ item.amount }}</td>
+                    <td>{{ item.category }}</td>
+                    <td>
+                        <a href="#">ลบ</a>
+                    </td>
+                    <td>
+                        <a href="#">แก้ไข</a>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
 {% endblock %}
